@@ -1,0 +1,12 @@
+[Unit]
+Description=FFMPEG HLS Service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/root/ffmpeg.sh
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://vjs.zencdn.net/7.14.3/video-js.css" rel="stylesheet" />
+        <style>
+            .video {
+            	width: 480px;
+            	float: left;
+                padding-right: 20px;
+            }
+            .buttons {
+            	float: left;
+            }
+            
+            @media (max-width: 500px) {
+                .video, .buttons {
+                    float: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="video">
+            <video
+                id="my-video"
+                class="video-js"
+                width="480"
+                height="270"
+                controls
+                preload="auto"
+                poster="/stream/screenshot.png"
+                data-setup="{}"
+            >
+                <source src="/stream/stream.m3u8" type="application/x-mpegURL">
+            </video>
+            <center>
+                <p>Note that the video might be delayed by up to 10 seconds.</p>
+            </center>
+        </div>
+        
+        <div class="buttons">
+            <button id="lock-button" onclick="toggleLock()">Unlock buttons</button>
+            <br/>
+            <br/>
+            <button id="power-button" onclick="power_button()" disabled=true>Power button</button>
+            <button id="reset-button" onclick="reset_button()" disabled=true>Reset button</button>
+        </div>
+        <script> window.HELP_IMPROVE_VIDEOJS = false; </script>
+        <script src="https://vjs.zencdn.net/7.14.3/video.min.js"></script>
+        <script>
+            let buttons_locked = true;
+
+            function toggleLock() {
+            	document.getElementById('lock-button').innerHTML = buttons_locked ? 'Lock buttons' : 'Unlock buttons';
+            	buttons_locked = !buttons_locked;
+            	for (const id of ['power-button', 'reset-button']) {
+            		document.getElementById(id).disabled = buttons_locked;
+            	}
+            }
+
+            function power_button() {
+                if (ws && ws.readyState == ws.OPEN) {
+                    ws.send(JSON.stringify({
+                        type: 'BUTTON',
+                        button: 'POWER',
+                        action: 'SHORT_PRESS'
+                    }));
+                } else alert('Error: WebSocket is not ready yet.');
+            }
+
+            function reset_button() {
+                if (ws && ws.readyState == ws.OPEN) {
+                    ws.send(JSON.stringify({
+                        type: 'BUTTON',
+                        button: 'RESET',
+                        action: 'SHORT_PRESS'
+                    }));
+                } else alert('Error: WebSocket is not ready yet.');
+            }
+
+            let ws;
+            function ws_connect() {
+                ws = new WebSocket(`${window.location.protocol == 'https' ? 'wss' : 'ws'}://${window.location.host}/ws`);
+                ws.onopen = () => {
+                    ws.send(JSON.stringify({
+                        type: 'AUTHENTICATE',
+                        pass: getCookie('Authentication')
+                    }));
+                }
+                ws.onmessage = msg => {
+                    // We consider all messages from the server "important" alerts
+                    alert(msg.data);
+                }
+                ws.onclose = () => {
+                    console.log('WS disconnected, reconnecting in 500ms')
+                    setTimeout(ws_connect, 500);
+                }
+            }
+            ws_connect();
+
+            function getCookie(cName) {
+                const name = cName + "=";
+                const cDecoded = decodeURIComponent(document.cookie); //to be careful
+                const cArr = cDecoded.split('; ');
+                let res;
+                cArr.forEach(val => {
+                    if (val.indexOf(name) === 0) res = val.substring(name.length);
+                })
+                return res
+            }
+        </script>
+    </body>
+</html>
+

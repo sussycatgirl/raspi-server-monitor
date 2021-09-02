@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Authentication required</title>
+        <style>
+
+        </style>
+    </head>
+    <body>
+        <center>
+            <h1>Enter password to continue</h1>
+            <label>Password: <input type="password" autofocus required id="password-field" /></label>
+            <input type="button" value="Log in" onclick="submit()">
+        </center>
+
+        <script>
+            function submit() {
+                document.cookie = `Authentication=${btoa(document.getElementById('password-field').value)}; expires=${new Date(Date.now() + 1000 * 60 * 60 * 24 * 30).toUTCString()}"`;
+                window.location.reload();
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,9 @@
+[Unit]
+Description=Screenshot monitor stream
+
+[Service]
+ExecStart=/root/ffmpeg-screenshot-stream.sh
+Type=oneshot
+
+[Install]
+WantedBy=timers.target
