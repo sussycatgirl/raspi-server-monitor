@@ -80,7 +80,7 @@
 
             let ws;
             function ws_connect() {
-                ws = new WebSocket(`${window.location.protocol == 'https' ? 'wss' : 'ws'}://${window.location.host}/ws`);
+                ws = new WebSocket(`${window.location.protocol.startsWith('https') ? 'wss' : 'ws'}://${window.location.host}/ws`);
                 ws.onopen = () => {
                     ws.send(JSON.stringify({
                         type: 'AUTHENTICATE',
