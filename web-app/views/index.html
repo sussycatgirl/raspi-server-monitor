@@ -27,9 +27,10 @@
                 width="480"
                 height="270"
                 controls
+                autoplay
                 preload="auto"
                 poster="/stream/screenshot.png"
-                data-setup="{}"
+                data-setup='{ "liveui": true, "html5": { "hls": { "overrideNative": true } } }'
             >
                 <source src="/stream/stream.m3u8" type="application/x-mpegURL">
             </video>
