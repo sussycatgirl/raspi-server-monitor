@@ -5,3 +5,6 @@ The buttons are directly hooked up to the server's power and reset buttons using
 ![](assets/dashboard.png)
 
 (setup instructions soon™)
+
+# License
+This project is licensed under the [AGPL 3.0](./LICENSE).
