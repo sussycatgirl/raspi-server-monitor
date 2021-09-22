@@ -4,7 +4,8 @@ The buttons are directly hooked up to the server's power and reset buttons using
 (USB HDMI capture device and a few transistors required) \
 ![](assets/dashboard.png)
 
-(setup instructions soon™)
+## Setup Instructions
+[setup.md](./setup.md) contains setup instructions.
 
 # License
 This project is licensed under the [AGPL 3.0](./LICENSE).
