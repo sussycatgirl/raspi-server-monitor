@@ -40,7 +40,9 @@ fs.writeFileSync(`/sys/class/gpio/gpio${GPIO_PINS.RESET}/direction`, 'out');
 
 const app = Express();
 app.use(CookieParser());
-const server = app.listen(3000, () => console.log('Listening on http://127.0.0.1:3000'));
+
+const port = process.env.PORT || 3000;
+const server = app.listen(Number(port), () => console.log('Listening on http://127.0.0.1:' + port));
 
 const wsServer = new WebSocket.Server({ noServer: true });
 
